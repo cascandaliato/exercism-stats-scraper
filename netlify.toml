@@ -1,0 +1,9 @@
+[build]
+  base = "backend"
+  command = "chmod a+x ./build.sh && ./build.sh"
+  functions = "functions"
+  publish = "public"
+
+[build.environment]
+  GO_IMPORT_PATH = "github.com/casca/exercism-stats-scraper"
+  GO111MODULE = "on"
