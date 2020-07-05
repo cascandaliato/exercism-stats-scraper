@@ -1,5 +1,4 @@
 [build]
-  base = "backend"
   command = "chmod a+x ./build.sh && ./build.sh"
   functions = "functions"
   publish = "public"
