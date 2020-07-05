@@ -33,6 +33,7 @@ func main() {
 }
 
 func solutionsJSON(w http.ResponseWriter, r *http.Request) {
+	panic(true)
 	res, err := http.Get("https://exercism.io/profiles/casca")
 	if err != nil {
 		log.Panic(err)
