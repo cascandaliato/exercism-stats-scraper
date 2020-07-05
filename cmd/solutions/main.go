@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"regexp"
 
 	"github.com/apex/gateway"
@@ -33,7 +34,7 @@ func main() {
 }
 
 func solutionsJSON(w http.ResponseWriter, r *http.Request) {
-	panic(true)
+	os.Exit(1)
 	res, err := http.Get("https://exercism.io/profiles/casca")
 	if err != nil {
 		log.Panic(err)
