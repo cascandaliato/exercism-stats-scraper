@@ -22,62 +22,87 @@ type errorResponse struct {
 	Error string `json:"error"`
 }
 
+type appHandler func(http.ResponseWriter, *http.Request) *appError
+
+type appError struct {
+	message string
+	code    int
+}
+
+const localPort = ":3030"
+
 func main() {
-	port := flag.Int("port", -1, "specify a port to use http rather than AWS Lambda")
+	local := flag.Bool("local", false, "specify during development, the endpoint will listen on localhost"+localPort)
 	flag.Parse()
 
 	listener := gateway.ListenAndServe
-	portStr := ":3030"
-	if *port != -1 {
+	if *local {
+		fmt.Println("Listening on localhost" + localPort)
 		listener = http.ListenAndServe
-		portStr = fmt.Sprintf(":%d", *port)
 	}
 
-	http.HandleFunc("/", solutionsJSON)
+	http.Handle("/", appHandler(solutionsJSON))
 
-	log.Fatal(listener(portStr, nil))
+	log.Fatal(listener(localPort, nil))
 }
 
-func solutionsJSON(w http.ResponseWriter, r *http.Request) {
+func solutionsJSON(w http.ResponseWriter, r *http.Request) *appError {
 	users, ok := r.URL.Query()["user"]
 	if !ok || len(users) < 1 {
-		replyError(w, errors.New("parameter 'user' is missing"))
-		return
+		return &appError{"parameter 'user' is missing", http.StatusBadRequest}
 	}
 
 	user := users[0]
+
+	if err := validateUser(user); err != nil {
+		return &appError{err.Error(), http.StatusBadRequest}
+	}
+
 	res, err := http.Get("https://exercism.io/profiles/" + user)
 	if err != nil {
-		replyError(w, err)
-		return
+		return &appError{err.Error(), http.StatusInternalServerError}
 	}
 
 	robots, err := ioutil.ReadAll(res.Body)
 	res.Body.Close()
 	if err != nil {
-		replyError(w, err)
-		return
+		return &appError{err.Error(), http.StatusInternalServerError}
 	}
 
 	re := regexp.MustCompile(`Showing (\d+) solutions`)
 	matches := re.FindSubmatch(robots)
 	if len(matches) < 2 {
-		replyError(w, fmt.Errorf("no match found for regular expression: %s", re.String()))
-		return
+		return &appError{
+			message: fmt.Sprintf("no match found for regular expression: '%s' - please check if this profile page exists: https://exercism.io/profiles/%s", re.String(), user),
+			code:    http.StatusInternalServerError,
+		}
 	}
 
 	total, err := strconv.Atoi(string(matches[1]))
 	if err != nil {
-
+		return &appError{err.Error(), http.StatusInternalServerError}
 	}
-	s := solutions{total}
 
+	s := solutions{total}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(s)
+	return nil
 }
 
-func replyError(w http.ResponseWriter, err error) {
-	log.Print(err)
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(errorResponse{err.Error()})
+func (fn appHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if err := fn(w, r); err != nil {
+		log.Printf("Message: %s - Code: %d\n", err.message, err.code)
+		w.WriteHeader(err.code)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(errorResponse{err.message})
+	}
+}
+
+func validateUser(user string) error {
+	re := regexp.MustCompile(`^[a-zA-Z0-9-]+$`)
+	match := re.FindString(user)
+	if len(match) == 0 {
+		return errors.New("parameter 'user' should contain only letters, numbers and hyphens")
+	}
+	return nil
 }
