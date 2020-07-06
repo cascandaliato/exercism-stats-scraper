@@ -1,4 +1,4 @@
-# Exercism Stats Scraper · [![Exercism statistics](https://img.shields.io/badge/dynamic/json?color=009caa&label=casca%27s%20solutions&query=total&url=https%3A%2F%2Fexercism-stats-scraper.netlify.app%2Fapi%2Fsolutions%3Fuser%3Dcasca&logo=exercism&logoColor=white)](https://exercism.io/profiles/casca)
+# Exercism Stats Scraper · [![Netlify](https://img.shields.io/netlify/dd4af605-f9cf-4b1a-9bcc-d2a35eaa66dd?logo=netlify&style=for-the-badge)](https://app.netlify.com/sites/exercism-stats-scraper/deploys) [![Exercism statistics](https://img.shields.io/badge/dynamic/json?color=009caa&label=casca%27s%20solutions&query=total&url=https%3A%2F%2Fexercism-stats-scraper.netlify.app%2Fapi%2Fsolutions%3Fuser%3Dcasca&logo=exercism&logoColor=white&style=for-the-badge)](https://exercism.io/profiles/casca)
 A super simple scraper of [Exercism](http://exercism.io/) user profiles that can be used to create badges with [Shields.io](https://shields.io/) (scroll down for [instructions](#create-a-badge)).
 
 - Right now it retrieves only the number of published solutions from the user profile page `https://exercism.io/profiles/<user>`.
