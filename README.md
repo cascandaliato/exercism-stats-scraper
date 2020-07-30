@@ -21,7 +21,7 @@ A super simple scraper of [Exercism](http://exercism.io/) user profiles that can
 1. Head to [Shields.io](https://shields.io/).
 1. Fill the form for the `Dynamic` badge:
     - data type: `json`
-    - data url: `https://exercism-stats-scraper.netlify.app/api/solutions?query=<user>` (replace `<user>` with your Exercism user)
+    - data url: `https://exercism-stats-scraper.netlify.app/api/solutions?user=<user>` (replace `<user>` with your Exercism user)
     - query: `total`
     - specify the badge label (e.g. `solutions`)
 1. Hit the Make Badge button.
