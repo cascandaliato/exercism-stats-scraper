@@ -1,4 +1,4 @@
-**Superseded by the official Exercism API v2.**
+**Superseded by the official Exercism API v3.**
 
 Instructions to [create a badge](#create-a-badge) are still valid, just replace the `data url` with `https://exercism.org/api/v2/profiles/<user>/solutions` (append `?criteria=&track_slug=<language>` if you want to filter by programming language), e.g. `https://exercism.org/api/v2/profiles/cascandaliato/solutions?criteria=&track_slug=go`.
 
