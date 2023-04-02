@@ -1,3 +1,9 @@
+**Superseded by the official Exercism API v2.**
+
+Instructions to [create a badge](#create-a-badge) are still valid, just replace the `data url` with `https://exercism.org/api/v2/profiles/<user>/solutions` (append `?criteria=&track_slug=<language>` if you want to filter by programming language), e.g. `https://exercism.org/api/v2/profiles/cascandaliato/solutions?criteria=&track_slug=go`.
+
+---
+
 # Exercism Stats Scraper · [![Netlify](https://img.shields.io/netlify/dd4af605-f9cf-4b1a-9bcc-d2a35eaa66dd?logo=netlify&style=flat-square&labelColor=%232B3137&label=deploy%20to%20netlify)](https://app.netlify.com/sites/exercism-stats-scraper/deploys) [![Exercism statistics](https://img.shields.io/badge/dynamic/json?color=009caa&label=my%20solutions&query=total&url=https%3A%2F%2Fexercism-stats-scraper.netlify.app%2Fapi%2Fsolutions%3Fuser%3Dcascandaliato&logo=exercism&logoColor=white&style=flat-square&labelColor=%232B3137)](https://exercism.io/profiles/cascandaliato)
 A super simple scraper of [Exercism](http://exercism.io/) user profiles that can be used to create badges like the one above (instructions [here](#create-a-badge)).
 
